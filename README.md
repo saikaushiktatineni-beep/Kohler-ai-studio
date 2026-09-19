@@ -70,11 +70,10 @@ Alternatively, open `index.html` directly in any modern browser, or serve the fo
 - Included multiple product tiers rather than a single recommendation, to better reflect real-world purchasing decisions
 
 ## Submission Contents
-
-- `/` — working web app source
-- `/docs/AI_Prompt_Documentation.pdf` — key AI prompts used during development
-- `/docs/Pitch_Deck.pdf` — 4-slide project pitch deck
-- Demo video — linked above
+## Documentation
+- 📄 [AI Prompt Documentation](AI_Prompt_Documentation.pdf)
+- 📊 [Presentation Deck](KOHLER-AI-Studio-AI-Bathroom-Designer-and-Planner.pdf)
+- 🎥 [Demo Video](https://youtu.be/aWuZWM7gudw)
 
 ## Author
 

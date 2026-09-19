@@ -6,7 +6,7 @@ Given a room size, budget, and style preference, the app generates tiered produc
 
 ## Demo Video
 
-[Add your video link here — YouTube (unlisted) or Google Drive]
+https://youtu.be/aWuZWM7gudw
 
 ## Features
 

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOHLER AI Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-indicator"></div>
+
+  <!-- AMBIENT JAZZ AUDIO -->
+  <audio id="ambient-music" loop src="jazz.mp3"></audio>
+
+  <!-- CINEMATIC LOGO TRANSITION -->
+  <div id="logo-transition" class="logo-transition hidden">
+    <img src="kohler.png" alt="Kohler" class="transition-logo">
+  </div>
+
+  <!-- LANDING PAGE -->
+  <div id="landing-page" class="landing-container">
+    <!-- Image Background -->
+    <img src="adam.png" class="bg-image" alt="AI Creation">
+    
+    <!-- Dark overlay to make text pop -->
+    <div class="bg-overlay"></div>
+
+    <div class="landing-content">
+      <h1 class="brand-title">KOHLER <span class="light-text">AI Studio</span></h1>
+      <p class="slogan">DESIGN YOUR SANCTUARY. ENGINEERED BY AI.</p>
+      <button class="enter-btn" onclick="startApp()">ENTER THE STUDIO</button>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app-container" class="app-container hidden">
+    
+    <header class="app-header">
+      <div>
+        <h1>KOHLER <span class="light-text">AI Studio</span></h1>
+        <p>INTELLIGENT SPATIAL & AESTHETIC ENGINE</p>
+      </div>
+      <div class="utility-buttons">
+        <!-- VOLUME SLIDER (Monochrome Style) -->
+        <div class="utility-btn volume-container" style="display: flex; align-items: center; gap: 8px; cursor: default; padding: 0 15px;">
+          <span style="font-size: 0.8rem; opacity: 0.7; letter-spacing: 1px;">VOL</span>
+          <input type="range" id="bgm-volume" class="volume-slider" min="0" max="1" step="0.05" value="0.5" title="Music Volume">
+        </div>
+        
+        <!-- MONOCHROME UTILITY BUTTONS -->
+        <button id="compare-toggle-btn" class="utility-btn" onclick="triggerCompareTransition()">⚖ Compare</button>
+        <button id="theme-toggle" class="utility-btn">☼ Theme</button>
+        <button id="export-btn" class="utility-btn">📄 Export</button>
+      </div>
+    </header>
+
+    <main class="main-layout">
+      <!-- Left Panel: Configurator -->
+      <section class="control-panel">
+        <h2>CONFIGURATION MENU</h2>
+        
+        <div class="menu-group">
+          <div class="menu-label">ROOM DIMENSIONS</div>
+          <select id="roomDimensions" class="menu-select">
+            <option value="6x8">6 × 8 FT (Compact)</option>
+            <option value="8x10" selected>8 × 10 FT (Standard)</option>
+            <option value="10x12">10 × 12 FT (Spacious)</option>
+          </select>
+        </div>
+        
+        <div class="menu-group">
+          <div class="menu-label">MAX BUDGET <span id="valBudget" class="val-display">$10,000</span></div>
+          <input type="range" id="budget" class="slider" min="2000" max="25000" step="500" value="10000">
+        </div>
+        
+        <div class="menu-group" style="margin-top: 2rem;">
+          <div class="menu-label">AESTHETIC THEME</div>
+          <select id="theme" class="menu-select">
+            <option value="Minimalist Modern">Minimalist Modern</option>
+            <option value="Classic Luxury">Classic Luxury</option>
+            <option value="Japanese Zen">Japanese Zen</option>
+          </select>
+        </div>
+
+        <button id="generateBtn" class="action-btn" onclick="generateTiers()">SYNTHESIZE</button>
+        <div id="meta-summary-left" class="meta-summary">8 × 10 ft · Minimalist Modern</div>
+
+        <!-- SMART ADD-ONS -->
+        <div class="menu-group" style="margin-top: 2.5rem;">
+          <div class="menu-label" style="color: var(--accent);">OPTIONAL UPGRADES</div>
+          <select id="upgradeMode" class="menu-select" onchange="toggleSmartCatalog()">
+            <option value="manual" selected>Manual System (Standard)</option>
+            <option value="automated">Automated System (Smart Catalog)</option>
+          </select>
+        </div>
+
+        <div id="addons-container" class="addons-grid" style="display: none; opacity: 0; transition: opacity 0.4s;"></div>
+
+      </section>
+
+      <!-- Right Panel: Results -->
+      <section class="results-panel">
+        <h2>SYSTEM OUTPUT</h2>
+        <div id="tier-buttons" class="tier-nav"></div>
+        <div id="bundle-cards" class="card-container"></div>
+        
+        <div class="schematic-header">
+          <h2>SPATIAL SCHEMATIC — TOP VIEW</h2>
+          <span id="meta-summary-right" class="meta-summary-small">8 × 10 ft · Minimalist Modern</span>
+        </div>
+        
+        <!-- NEW INTERACTIVE VIEWPORT -->
+        <div class="canvas-container" style="position: relative;">
+          
+          <div class="viewport-controls">
+            <button onclick="rotateViewport(-90)" title="Rotate Left">↺</button>
+            <button onclick="rotateViewport(90)" title="Rotate Right">↻</button>
+            <button onclick="zoomViewport(0.15)" title="Zoom In">➕</button>
+            <button onclick="zoomViewport(-0.15)" title="Zoom Out">➖</button>
+            <button onclick="resetViewport()" title="Reset View">⟲</button>
+          </div>
+
+          <canvas id="floorplan" width="700" height="500"></canvas>
+        </div>
+
+        <!-- NEW ITEMIZED SUMMARY PANEL -->
+        <div id="config-summary-panel" class="config-summary-panel">
+           <!-- JavaScript will inject the itemized receipt here -->
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- COMPARISON MODE OVERLAY (Hidden by default) -->
+  <div id="compare-page" class="compare-page hidden">
+    <header class="app-header">
+      <div>
+        <h1>KOHLER <span class="light-text">Comparison Engine</span></h1>
+        <p>SIDE-BY-SIDE ANALYTICS</p>
+      </div>
+      <button class="utility-btn" style="width: auto; margin:0;" onclick="toggleCompareMode(false)">✖ Back to Studio</button>
+    </header>
+
+    <div class="compare-grid">
+      
+      <!-- LEFT CONFIGURATION -->
+      <div class="compare-panel">
+        <h2 style="border:none; margin-bottom:1rem; text-align:center;">CONFIGURATION A</h2>
+        <div class="compare-selectors">
+          <select id="comp-size-left" class="menu-select comp-trigger">
+            <option value="6x8">6x8 FT</option>
+            <option value="8x10" selected>8x10 FT</option>
+            <option value="10x12">10x12 FT</option>
+          </select>
+          <select id="comp-theme-left" class="menu-select comp-trigger">
+            <option value="Minimalist Modern" selected>Modern</option>
+            <option value="Japanese Zen">Zen</option>
+            <option value="Classic Luxury">Luxury</option>
+          </select>
+          <select id="comp-tier-left" class="menu-select comp-trigger">
+            <option value="Value">Value</option>
+            <option value="Balanced" selected>Balanced</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+        
+        <img id="comp-img-left" class="compare-viewport" src="" alt="Left Render">
+        
+        <div class="adv-box">
+          <h4>Advantages</h4>
+          <ul id="comp-adv-left"></ul>
+        </div>
+      </div>
+
+      <!-- RIGHT CONFIGURATION -->
+      <div class="compare-panel">
+        <h2 style="border:none; margin-bottom:1rem; text-align:center;">CONFIGURATION B</h2>
+        <div class="compare-selectors">
+          <select id="comp-size-right" class="menu-select comp-trigger">
+            <option value="6x8">6x8 FT</option>
+            <option value="8x10" selected>8x10 FT</option>
+            <option value="10x12">10x12 FT</option>
+          </select>
+          <select id="comp-theme-right" class="menu-select comp-trigger">
+            <option value="Minimalist Modern">Modern</option>
+            <option value="Japanese Zen" selected>Zen</option>
+            <option value="Classic Luxury">Luxury</option>
+          </select>
+          <select id="comp-tier-right" class="menu-select comp-trigger">
+            <option value="Value">Value</option>
+            <option value="Balanced">Balanced</option>
+            <option value="Premium" selected>Premium</option>
+          </select>
+        </div>
+        
+        <img id="comp-img-right" class="compare-viewport" src="" alt="Right Render">
+        
+        <div class="adv-box">
+          <h4>Advantages</h4>
+          <ul id="comp-adv-right"></ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating AI Chat Toggle Button (Monochrome Style) -->
+  <button id="ai-chat-toggle" class="ai-fab hidden">✦ AI Assistant</button>
+
+  <!-- Interactive AI Chat Window -->
+  <div id="ai-chat-window" class="ai-chat-window hidden">
+    <div class="chat-header">
+      <strong>KOHLER AI Assistant</strong>
+      <button id="close-chat" class="close-btn">✖</button>
+    </div>
+    
+    <div class="chat-history" id="chat-history">
+      <div class="chat-msg ai-msg">
+        Hello! I'm your Kohler AI Engine. Ask me for a recommendation, or ask about your current budget, room size, or theme!
+      </div>
+    </div>
+    
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Ask about your design..." autocomplete="off"/>
+      <button id="send-chat" class="action-btn chat-send">Send</button>
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div id="product-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">✖</button>
+      <div class="modal-body">
+        <div class="modal-header">
+          <span id="modal-category" class="card-category">CATEGORY</span>
+          <h2 id="modal-title">Product Name</h2>
+          <div id="modal-price" class="price" style="margin-bottom: 0;">$0</div>
+        </div>
+        <div class="modal-details">
+          <p><strong>Dimensions:</strong> <span id="modal-size"></span></p>
+          <p><strong>Finish/Material:</strong> <span id="modal-finish"></span></p>
+          <p><strong>Eco-Status:</strong> <span id="modal-eco"></span></p>
+          <div class="summary-divider"></div>
+          <p id="modal-desc" class="modal-desc-text">Product description goes here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
